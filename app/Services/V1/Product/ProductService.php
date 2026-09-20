@@ -88,11 +88,21 @@ class ProductService extends BaseService
         return $rawCondition;
     }
 
-    public function paginate($request, $languageId, $productCatalogue = null, $page = 1, $extend = [])
+    public function paginate($request, $languageId, $productCatalogue = null, $page = null, $extend = [])
     {
-        if (!is_null($productCatalogue)) {
+        // Duong dan ngoai site la /san-pham/trang-2.html chu khong phai ?page=2,
+        // nen so trang den tu tham so route va phai bao lai cho Laravel.
+        //
+        // Truoc day dieu kien o day la "co danh muc hay khong", nen trang
+        // /san-pham.html (goi voi $productCatalogue = null) khong bao gio doi
+        // duoc trang: bam sang trang 2 van ra dung 8 san pham cua trang 1.
+        //
+        // Dieu kien dung phai la "co truyen so trang vao hay khong". Man hinh
+        // quan tri goi paginate() ma khong truyen $page nen van dung ?page=
+        // nhu cu, khong bi anh huong.
+        if (!is_null($page)) {
             Paginator::currentPageResolver(function () use ($page) {
-                return $page;
+                return (int) $page;
             });
         }
 
