@@ -1,0 +1,36 @@
+/vendor
+/node_modules
+/public/hot
+/public/storage
+/public/image-cache
+/storage/*.key
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+!.gitkeep
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# Anh do nguoi dung tai len khi dung site - khong dua vao ma nguon.
+/public/uploads/*
+/public/upload
+
+# Rieng bo anh thiet ke cua WACO (icon, banner, anh danh muc) thi phai theo
+# ma nguon, khong co no thi site tren host se trong tron.
+!/public/uploads/waco
+
+# File nen cai dat cua CKFinder/plugins - da giai nen san canh no, khong
+# duoc web phuc vu, chi lam nang repo.
+/public/backend/plugins/*.zip
+/public/vendor/backend/plugins/*.zip
+/resources/vendor/backend/plugins/*.zip

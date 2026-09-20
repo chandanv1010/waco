@@ -1,0 +1,47 @@
+services:
+  app:
+    build: ./docker/php
+    container_name: waco-app
+    ports:
+      - "8008:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: waco-db
+    ports:
+      - "33068:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sql_waco
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db-data:/var/lib/mysql
+      # Mount dung file dump cua waco. Khong mount ca folder ../db vi trong do
+      # con dump cua project khac, se bi import nham vao database nay.
+      - ../db/sql_waco.sql:/docker-entrypoint-initdb.d/01-waco.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: waco-pma
+    ports:
+      - "8088:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+      UPLOAD_LIMIT: 256M
+    depends_on:
+      - db
+
+volumes:
+  db-data:

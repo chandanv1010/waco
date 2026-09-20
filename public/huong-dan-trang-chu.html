@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hướng dẫn quản trị Trang chủ — WACO Việt Nam</title>
+<style>
+    :root{
+        --navy:#0b3a7a; --navy-dark:#0a2f63; --blue:#1877f2;
+        --ink:#16202c; --text:#4a5568; --muted:#8b95a3;
+        --line:#e3e8ef; --bg:#f5f8fc; --warn:#b9770e; --warn-bg:#fdf6e3;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    body{
+        margin:0;background:var(--bg);color:var(--ink);
+        font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+        font-size:15px;line-height:1.65;
+    }
+    .wrap{max-width:1000px;margin:0 auto;padding:0 20px 70px}
+
+    header.top{
+        background:linear-gradient(160deg,var(--navy) 0%,var(--navy-dark) 100%);
+        color:#fff;padding:44px 0 38px;margin-bottom:34px;
+    }
+    header.top .wrap{padding-bottom:0}
+    header.top h1{margin:0 0 8px;font-size:28px;font-weight:800;letter-spacing:.01em}
+    header.top p{margin:0;color:rgba(255,255,255,.82);font-size:14px;max-width:760px}
+
+    h2.sec{
+        margin:40px 0 14px;padding-bottom:10px;border-bottom:2px solid var(--blue);
+        color:var(--navy);font-size:19px;font-weight:800;
+    }
+    h3{margin:26px 0 10px;color:var(--navy);font-size:16px;font-weight:700}
+
+    /* Sơ đồ bố cục trang chủ */
+    .map{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:10px}
+    .map svg{display:block;width:100%;height:auto}
+
+    .legend{
+        display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+        gap:8px 18px;margin:16px 0 0;padding:0;list-style:none;font-size:13px;
+    }
+    .legend li{display:flex;gap:9px;align-items:flex-start}
+
+    .num{
+        flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;
+        width:22px;height:22px;border-radius:50%;
+        background:var(--blue);color:#fff;font-size:11px;font-weight:700;
+    }
+
+    /* Thẻ từng khối */
+    .block{
+        background:#fff;border:1px solid var(--line);border-radius:12px;
+        padding:20px 22px;margin-bottom:16px;
+    }
+    .block > h3{margin-top:0;display:flex;align-items:center;gap:10px}
+    .block > p.lead{margin:0 0 14px;color:var(--text);font-size:13.5px}
+
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{padding:9px 11px;border:1px solid var(--line);text-align:left;vertical-align:top}
+    th{background:var(--bg);color:var(--navy);font-weight:700;white-space:nowrap}
+    td.field{font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:12px;color:var(--navy);white-space:nowrap}
+
+    .where{
+        display:inline-block;padding:2px 8px;border-radius:3px;
+        background:#eaf1fd;color:var(--navy);font-size:12px;font-weight:600;white-space:nowrap;
+    }
+
+    .note{
+        margin:14px 0 0;padding:12px 15px;border-left:3px solid var(--blue);
+        background:#f2f7ff;border-radius:0 4px 4px 0;font-size:13px;color:var(--text);
+    }
+    .warn{
+        margin:14px 0 0;padding:12px 15px;border-left:3px solid var(--warn);
+        background:var(--warn-bg);border-radius:0 4px 4px 0;font-size:13px;color:#7a5209;
+    }
+    .warn strong{color:var(--warn)}
+
+    ol.steps{margin:10px 0 0;padding-left:20px;font-size:13.5px;color:var(--text)}
+    ol.steps li{margin-bottom:6px}
+
+    code{
+        padding:1px 5px;border-radius:3px;background:#eef2f7;
+        font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:12.5px;color:var(--navy);
+    }
+
+    footer.bot{
+        margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+        color:var(--muted);font-size:12.5px;text-align:center;
+    }
+
+    @media print{
+        body{background:#fff}
+        header.top{padding:24px 0}
+        .block,.map{break-inside:avoid;box-shadow:none}
+        h2.sec{break-after:avoid}
+    }
+    @media (max-width:640px){
+        th,td{padding:7px 8px;font-size:12px}
+        table{display:block;overflow-x:auto}
+    }
+</style>
+</head>
+<body>
+
+<header class="top">
+    <div class="wrap">
+        <h1>Hướng dẫn quản trị Trang chủ</h1>
+        <p>
+            Tài liệu chỉ ra: mỗi phần nhìn thấy trên trang chủ được sửa ở đâu trong trang quản trị.
+            Mỗi khối đánh số theo đúng thứ tự từ trên xuống dưới của trang chủ.
+        </p>
+    </div>
+</header>
+
+<div class="wrap">
+
+<h2 class="sec">Sơ đồ trang chủ</h2>
+
+<div class="map">
+<svg viewBox="0 0 900 1180" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Sơ đồ bố cục trang chủ WACO với 11 khối được đánh số">
+    <defs>
+        <style>
+            .bx{fill:#fff;stroke:#c9d6e8;stroke-width:1.5}
+            .bx-navy{fill:#0b3a7a;stroke:#0b3a7a}
+            .bx-soft{fill:#eef3fb;stroke:#c9d6e8;stroke-width:1.5}
+            .lbl{font:600 15px "Segoe UI",sans-serif;fill:#16202c}
+            .lbl-w{font:600 15px "Segoe UI",sans-serif;fill:#fff}
+            .sub{font:13px "Segoe UI",sans-serif;fill:#6b7a8f}
+            .sub-w{font:13px "Segoe UI",sans-serif;fill:#c5d6ee}
+            .bdg{fill:#1877f2}
+            .bdgt{font:700 13px "Segoe UI",sans-serif;fill:#fff;text-anchor:middle}
+            .ph{fill:#dae4f2}
+        </style>
+    </defs>
+
+    <!-- 1 Đầu trang -->
+    <rect class="bx" x="20" y="14" width="860" height="52" rx="7"/>
+    <rect class="ph" x="42" y="30" width="70" height="20" rx="3"/>
+    <rect class="ph" x="300" y="34" width="250" height="12" rx="3"/>
+    <rect class="bx-navy" x="700" y="27" width="140" height="26" rx="4"/>
+    <circle class="bdg" cx="36" cy="26" r="13"/><text class="bdgt" x="36" y="31">1</text>
+    <text class="lbl" x="130" y="45">Đầu trang</text>
+
+    <!-- 2 Banner -->
+    <rect class="bx-soft" x="20" y="78" width="860" height="215" rx="7"/>
+    <rect class="ph" x="470" y="100" width="385" height="172" rx="5"/>
+    <rect class="ph" x="55" y="110" width="330" height="18" rx="3"/>
+    <rect class="ph" x="55" y="136" width="290" height="18" rx="3"/>
+    <rect class="ph" x="55" y="168" width="200" height="11" rx="3"/>
+    <circle class="ph" cx="72" cy="208" r="14"/><circle class="ph" cx="162" cy="208" r="14"/>
+    <circle class="ph" cx="252" cy="208" r="14"/><circle class="ph" cx="342" cy="208" r="14"/>
+    <rect class="bx-navy" x="55" y="240" width="140" height="30" rx="3"/>
+    <rect class="bx" x="210" y="240" width="140" height="30" rx="3"/>
+    <circle class="bdg" cx="36" cy="90" r="13"/><text class="bdgt" x="36" y="95">2</text>
+    <text class="lbl" x="55" y="98">Banner chính</text>
+
+    <!-- 3 Dải cam kết -->
+    <rect class="bx-navy" x="20" y="303" width="860" height="66" rx="7"/>
+    <circle class="bdg" cx="36" cy="315" r="13"/><text class="bdgt" x="36" y="320">3</text>
+    <text class="lbl-w" x="60" y="332">Dải cam kết — 5 chỉ số</text>
+    <text class="sub-w" x="60" y="352">20+ năm · 100+ quốc gia · 1000+ đại lý · 63 tỉnh · 2 thương hiệu</text>
+
+    <!-- 4 Cam kết chính hãng -->
+    <rect class="bx" x="20" y="381" width="860" height="170" rx="7"/>
+    <rect class="ph" x="470" y="400" width="385" height="132" rx="5"/>
+    <rect class="ph" x="55" y="404" width="120" height="10" rx="3"/>
+    <rect class="ph" x="55" y="424" width="300" height="16" rx="3"/>
+    <rect class="ph" x="55" y="452" width="380" height="9" rx="3"/>
+    <rect class="ph" x="55" y="468" width="380" height="9" rx="3"/>
+    <rect class="ph" x="55" y="484" width="300" height="9" rx="3"/>
+    <circle class="ph" cx="72" cy="518" r="13"/><circle class="ph" cx="192" cy="518" r="13"/>
+    <circle class="ph" cx="312" cy="518" r="13"/>
+    <circle class="bdg" cx="36" cy="393" r="13"/><text class="bdgt" x="36" y="398">4</text>
+    <text class="lbl" x="55" y="398">Cam kết chính hãng</text>
+
+    <!-- 5 Hệ sinh thái -->
+    <rect class="bx" x="20" y="563" width="860" height="200" rx="7"/>
+    <rect class="ph" x="330" y="580" width="240" height="15" rx="3"/>
+    <rect class="ph" x="290" y="604" width="320" height="9" rx="3"/>
+    <g>
+        <rect class="bx-soft" x="46" y="628" width="128" height="122" rx="6"/>
+        <rect class="bx-soft" x="186" y="628" width="128" height="122" rx="6"/>
+        <rect class="bx-soft" x="326" y="628" width="128" height="122" rx="6"/>
+        <rect class="bx-soft" x="466" y="628" width="128" height="122" rx="6"/>
+        <rect class="bx-soft" x="606" y="628" width="128" height="122" rx="6"/>
+        <rect class="bx-soft" x="746" y="628" width="108" height="122" rx="6"/>
+    </g>
+    <circle class="bdg" cx="36" cy="575" r="13"/><text class="bdgt" x="36" y="580">5</text>
+    <text class="lbl" x="55" y="580">Hệ sinh thái sản phẩm — 6 danh mục</text>
+
+    <!-- 6 Vì sao WACO -->
+    <rect class="bx-navy" x="20" y="775" width="860" height="110" rx="7"/>
+    <circle class="bdg" cx="36" cy="787" r="13"/><text class="bdgt" x="36" y="792">6</text>
+    <text class="lbl-w" x="60" y="806">Vì sao WACO — 6 lý do</text>
+    <g fill="#38598f">
+        <circle cx="105" cy="845" r="17"/><circle cx="240" cy="845" r="17"/><circle cx="375" cy="845" r="17"/>
+        <circle cx="510" cy="845" r="17"/><circle cx="645" cy="845" r="17"/><circle cx="780" cy="845" r="17"/>
+    </g>
+
+    <!-- 7 + 8 Mạng lưới + form -->
+    <rect class="bx" x="20" y="897" width="470" height="200" rx="7"/>
+    <rect class="ph" x="45" y="915" width="120" height="9" rx="3"/>
+    <rect class="ph" x="45" y="932" width="230" height="16" rx="3"/>
+    <rect class="bx-soft" x="45" y="962" width="90" height="52" rx="5"/>
+    <rect class="bx-soft" x="145" y="962" width="90" height="52" rx="5"/>
+    <rect class="ph" x="270" y="960" width="190" height="120" rx="5"/>
+    <rect class="bx-navy" x="45" y="1046" width="150" height="28" rx="3"/>
+    <circle class="bdg" cx="36" cy="909" r="13"/><text class="bdgt" x="36" y="914">7</text>
+    <text class="lbl" x="55" y="914">Mạng lưới phân phối</text>
+
+    <rect class="bx-navy" x="502" y="897" width="378" height="200" rx="7"/>
+    <rect x="522" y="950" width="338" height="24" rx="3" fill="#1c4e94"/>
+    <rect x="522" y="984" width="338" height="24" rx="3" fill="#1c4e94"/>
+    <rect x="522" y="1018" width="338" height="24" rx="3" fill="#1c4e94"/>
+    <rect x="522" y="1052" width="120" height="26" rx="3" fill="#1877f2"/>
+    <circle class="bdg" cx="518" cy="909" r="13"/><text class="bdgt" x="518" y="914">8</text>
+    <text class="lbl-w" x="538" y="930">Form đăng ký đại lý</text>
+
+    <!-- 9 Tin tức -->
+
+    <rect class="bx" x="20" y="1109" width="860" height="61" rx="7"/>
+    <circle class="bdg" cx="36" cy="1121" r="13"/><text class="bdgt" x="36" y="1126">9</text>
+    <text class="lbl" x="60" y="1136">Tin tức — 4 bài</text>
+    <text class="sub" x="60" y="1156">Khối 10 Chân trang và 11 Nút liên hệ nổi nằm ngoài vùng nội dung</text>
+</svg>
+</div>
+
+<ul class="legend">
+    <li><span class="num">1</span> Đầu trang (logo, menu, nút)</li>
+    <li><span class="num">2</span> Banner chính</li>
+    <li><span class="num">3</span> Dải cam kết</li>
+    <li><span class="num">4</span> Cam kết chính hãng</li>
+    <li><span class="num">5</span> Hệ sinh thái sản phẩm</li>
+    <li><span class="num">6</span> Vì sao WACO</li>
+    <li><span class="num">7</span> Mạng lưới phân phối</li>
+    <li><span class="num">8</span> Form đăng ký đại lý</li>
+    <li><span class="num">9</span> Tin tức</li>
+    <li><span class="num">10</span> Chân trang</li>
+    <li><span class="num">11</span> Nút liên hệ nổi</li>
+</ul>
+
+<div class="note">
+    <strong>Bốn nơi cần nhớ trong trang quản trị:</strong><br>
+    <span class="where">Cấu hình hệ thống</span> thông tin công ty, logo, ảnh, liên hệ &nbsp;·&nbsp;
+    <span class="where">Giới thiệu</span> các đoạn chữ trên trang &nbsp;·&nbsp;
+    <span class="where">Slide</span> ảnh banner &nbsp;·&nbsp;
+    <span class="where">Widget</span> chọn danh mục / bài viết hiện ra trang chủ
+</div>
+
+
+<h2 class="sec">Chi tiết từng khối</h2>
+
+<!-- 1 -->
+<div class="block">
+    <h3><span class="num">1</span> Đầu trang</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Logo</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin chung</td><td class="field">Logo Website</td></tr>
+        <tr><td>Menu chính</td><td><span class="where">Menu</span> → nhóm <code>main-menu</code></td><td class="field">—</td></tr>
+        <tr><td>Nút “Trở thành đại lý”</td><td><span class="where">Giới thiệu</span></td><td class="field">header_cta_label</td></tr>
+    </table>
+    <p class="note">Menu tự đổ xuống khi một mục có mục con. Kéo thả để đổi thứ tự trong module Menu.</p>
+</div>
+
+<!-- 2 -->
+<div class="block">
+    <h3><span class="num">2</span> Banner chính</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Ảnh nền banner</td><td><span class="where">Slide</span> → bản ghi <code>main-slide</code></td><td class="field">—</td></tr>
+        <tr><td>Tiêu đề dòng 1</td><td><span class="where">Giới thiệu</span></td><td class="field">hero_title_line1</td></tr>
+        <tr><td>Tiêu đề dòng 2 (có chữ xanh)</td><td><span class="where">Giới thiệu</span></td><td class="field">hero_title_line2</td></tr>
+        <tr><td>Tiêu đề dòng 3</td><td><span class="where">Giới thiệu</span></td><td class="field">hero_title_line3</td></tr>
+        <tr><td>Dòng mô tả dưới tiêu đề</td><td><span class="where">Giới thiệu</span></td><td class="field">hero_description</td></tr>
+        <tr><td>4 điểm mạnh (icon + chữ)</td><td>Bảng <code>home_features</code>, nhóm <code>hero_usp</code></td><td class="field">xem ghi chú</td></tr>
+        <tr><td>Nút chính</td><td><span class="where">Giới thiệu</span></td><td class="field">hero_cta_label</td></tr>
+        <tr><td>Nút phụ</td><td><span class="where">Giới thiệu</span></td><td class="field">hero_cta2_label</td></tr>
+        <tr><td>File hồ sơ năng lực (nút phụ tải về)</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin chung</td><td class="field">Link hồ sơ năng lực</td></tr>
+    </table>
+
+    <p class="note">
+        <strong>Muốn banner chạy nhiều ảnh:</strong> vào Slide → mở <code>main-slide</code> → “Thêm slide” →
+        chọn ảnh thứ hai. Từ ảnh thứ hai trở lên banner tự chuyển 6 giây một lần. Chỉ một ảnh thì đứng yên.
+    </p>
+    <p class="note">
+        Chữ đỏ/xanh trong tiêu đề dòng 2 viết bằng thẻ <code>&lt;span&gt;WACO KOREA&lt;/span&gt;</code>.
+        Muốn tô chữ khác thì đặt chữ đó vào trong cặp thẻ này.
+    </p>
+</div>
+
+<!-- 3 -->
+<div class="block">
+    <h3><span class="num">3</span> Dải cam kết — 5 chỉ số</h3>
+    <p class="lead">Dải màu xanh đậm nằm đè lên đáy banner: 20+ năm kinh nghiệm, 100+ quốc gia xuất khẩu…</p>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Ghi chú</th></tr>
+        <tr><td>Con số + nhãn + icon</td><td>Bảng <code>home_features</code>, nhóm <code>commit</code></td><td>Mỗi dòng: <code>value</code> = con số, <code>title</code> = nhãn, <code>icon</code> = đường dẫn ảnh icon</td></tr>
+    </table>
+</div>
+
+<!-- 4 -->
+<div class="block">
+    <h3><span class="num">4</span> Cam kết chính hãng từ WACO Korea</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Nhãn nhỏ màu xanh phía trên</td><td><span class="where">Giới thiệu</span></td><td class="field">about_label</td></tr>
+        <tr><td>Tiêu đề lớn (2 dòng)</td><td><span class="where">Giới thiệu</span></td><td class="field">about_heading</td></tr>
+        <tr><td>Dòng in đậm dưới tiêu đề</td><td><span class="where">Giới thiệu</span></td><td class="field">about_subheading</td></tr>
+        <tr><td>Hai đoạn văn giới thiệu</td><td><span class="where">Giới thiệu</span></td><td class="field">about_content</td></tr>
+        <tr><td>3 huy hiệu (Giấy chứng nhận, CO CQ, Hỗ trợ)</td><td>Bảng <code>home_features</code>, nhóm <code>about_badge</code></td><td class="field">xem ghi chú</td></tr>
+        <tr><td>Ảnh trụ sở bên phải</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin chung</td><td class="field">Ảnh khối “Cam kết chính hãng”</td></tr>
+    </table>
+    <p class="note">Tiêu đề xuống dòng bằng thẻ <code>&lt;br&gt;</code>. Ví dụ: <code>CAM KẾT CHÍNH HÃNG&lt;br&gt;TỪ WACO KOREA</code></p>
+</div>
+
+<!-- 5 -->
+<div class="block">
+    <h3><span class="num">5</span> Hệ sinh thái sản phẩm WACO</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Tiêu đề khối</td><td><span class="where">Giới thiệu</span></td><td class="field">ecosystem_heading</td></tr>
+        <tr><td>Dòng mô tả dưới tiêu đề</td><td><span class="where">Giới thiệu</span></td><td class="field">ecosystem_description</td></tr>
+        <tr><td><strong>Chọn 6 danh mục nào hiện ra</strong></td><td><span class="where">Widget</span> → <code>homepage-categories</code></td><td class="field">—</td></tr>
+        <tr><td>Tên, mô tả, icon, ảnh của từng danh mục</td><td><span class="where">Sản phẩm</span> → Nhóm sản phẩm</td><td class="field">—</td></tr>
+    </table>
+    <p class="note">
+        <strong>Đổi thứ tự 6 thẻ:</strong> vào Widget <code>homepage-categories</code>, thứ tự chọn danh mục
+        chính là thứ tự hiện ra ngoài trang. Muốn bớt còn 4 thẻ thì bỏ chọn 2 danh mục.
+    </p>
+</div>
+
+<!-- 6 -->
+<div class="block">
+    <h3><span class="num">6</span> Vì sao WACO được tin dùng</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Câu hỏi tiêu đề</td><td><span class="where">Giới thiệu</span></td><td class="field">why_heading</td></tr>
+        <tr><td>6 lý do (icon + tiêu đề + mô tả)</td><td>Bảng <code>home_features</code>, nhóm <code>why_waco</code></td><td class="field">xem ghi chú</td></tr>
+    </table>
+</div>
+
+<!-- 7 -->
+<div class="block">
+    <h3><span class="num">7</span> Mạng lưới phân phối WACO toàn quốc</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Nhãn nhỏ phía trên</td><td><span class="where">Giới thiệu</span></td><td class="field">network_label</td></tr>
+        <tr><td>Tiêu đề lớn</td><td><span class="where">Giới thiệu</span></td><td class="field">network_heading</td></tr>
+        <tr><td>4 ô con số (100+, 63, 1000+, 20+)</td><td>Bảng <code>home_features</code>, nhóm <code>stat</code></td><td class="field">xem ghi chú</td></tr>
+        <tr><td>Ảnh bản đồ Việt Nam</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin chung</td><td class="field">Ảnh bản đồ hệ thống đại lý</td></tr>
+        <tr><td>Nút “Xem bản đồ đại lý”</td><td><span class="where">Giới thiệu</span></td><td class="field">network_cta_label</td></tr>
+    </table>
+</div>
+
+<!-- 8 -->
+<div class="block">
+    <h3><span class="num">8</span> Form “Trở thành đại lý phân phối WACO”</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Tiêu đề form</td><td><span class="where">Giới thiệu</span></td><td class="field">dealer_form_heading</td></tr>
+        <tr><td>Đoạn mô tả dưới tiêu đề</td><td><span class="where">Giới thiệu</span></td><td class="field">dealer_form_description</td></tr>
+        <tr><td>Nhãn các ô nhập và nút “Gửi yêu cầu”</td><td colspan="2">Cố định trong mã nguồn — báo lập trình nếu cần đổi</td></tr>
+    </table>
+    <p class="note">
+        Đơn khách gửi lưu vào bảng <code>dealer_registrations</code>. Bảng này <strong>chưa có màn hình xem trong admin</strong> —
+        xem mục “Việc còn lại” ở cuối tài liệu.
+    </p>
+</div>
+
+<!-- 9 -->
+<div class="block">
+    <h3><span class="num">9</span> Tin tức — Sự kiện</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Tiêu đề khối</td><td><span class="where">Giới thiệu</span></td><td class="field">news_heading</td></tr>
+        <tr><td><strong>Chọn 4 bài nào hiện ra</strong></td><td><span class="where">Widget</span> → <code>homepage-news</code></td><td class="field">—</td></tr>
+        <tr><td>Ảnh, tiêu đề, mô tả ngắn, ngày của từng bài</td><td><span class="where">Bài viết</span></td><td class="field">—</td></tr>
+    </table>
+    <p class="note">
+        <strong>Muốn thay bài trên trang chủ:</strong> viết bài mới trong module Bài viết →
+        vào Widget <code>homepage-news</code> → bỏ bài cũ, chọn bài mới. Trang chủ đổi ngay.
+    </p>
+    <p class="note">
+        Đoạn chữ dưới tiêu đề mỗi thẻ lấy từ ô <strong>Mô tả ngắn</strong> của bài viết (không phải nội dung bài).
+    </p>
+</div>
+
+<!-- 10 -->
+<div class="block">
+    <h3><span class="num">10</span> Chân trang</h3>
+    <table>
+        <tr><th>Phần hiển thị</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Logo</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin chung</td><td class="field">Logo Website</td></tr>
+        <tr><td>Đoạn giới thiệu dưới logo</td><td><span class="where">Giới thiệu</span></td><td class="field">footer_description</td></tr>
+        <tr><td>3 cột liên kết</td><td><span class="where">Menu</span> → nhóm <code>footer-menu</code></td><td class="field">—</td></tr>
+        <tr><td>Địa chỉ</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin liên hệ</td><td class="field">Văn phòng giao dịch</td></tr>
+        <tr><td>Hotline</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin liên hệ</td><td class="field">Hotline</td></tr>
+        <tr><td>Email</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin liên hệ</td><td class="field">Email</td></tr>
+        <tr><td>Website</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin liên hệ</td><td class="field">Website</td></tr>
+        <tr><td>Facebook / YouTube / TikTok</td><td><span class="where">Cấu hình hệ thống</span> → Mạng xã hội</td><td class="field">Facebook, Youtube, Tiktok</td></tr>
+        <tr><td>Dòng bản quyền cuối trang</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin chung</td><td class="field">Copyright</td></tr>
+    </table>
+    <p class="note">
+        Trong nhóm <code>footer-menu</code>, mục <strong>cấp 1</strong> là tiêu đề cột, mục <strong>cấp 2</strong> là các liên kết trong cột đó.
+    </p>
+</div>
+
+<!-- 11 -->
+<div class="block">
+    <h3><span class="num">11</span> Nút liên hệ nổi (góc phải màn hình)</h3>
+    <table>
+        <tr><th>Nút</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Gọi điện</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin liên hệ</td><td class="field">Hotline</td></tr>
+        <tr><td>Email</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin liên hệ</td><td class="field">Email</td></tr>
+        <tr><td>Messenger</td><td><span class="where">Cấu hình hệ thống</span> → Mạng xã hội</td><td class="field">Messenger</td></tr>
+        <tr><td>Zalo</td><td><span class="where">Cấu hình hệ thống</span> → Mạng xã hội</td><td class="field">Zalo</td></tr>
+    </table>
+    <p class="note">Ô nào để trống thì nút đó <strong>tự ẩn</strong>, không hiện nút bấm vào không đi đâu.</p>
+</div>
+
+<!-- SEO -->
+<div class="block">
+    <h3>Ngoài ra — SEO của trang chủ</h3>
+    <table>
+        <tr><th>Phần</th><th>Sửa ở đâu</th><th>Tên ô</th></tr>
+        <tr><td>Tiêu đề trên tab trình duyệt và Google</td><td><span class="where">Cấu hình hệ thống</span> → SEO</td><td class="field">Meta title</td></tr>
+        <tr><td>Mô tả hiện trên Google</td><td><span class="where">Cấu hình hệ thống</span> → SEO</td><td class="field">Meta description</td></tr>
+        <tr><td>Từ khóa</td><td><span class="where">Cấu hình hệ thống</span> → SEO</td><td class="field">Meta keyword</td></tr>
+        <tr><td>Ảnh khi chia sẻ lên Facebook / Zalo</td><td><span class="where">Cấu hình hệ thống</span> → SEO</td><td class="field">Meta images</td></tr>
+        <tr><td>Favicon (icon nhỏ trên tab)</td><td><span class="where">Cấu hình hệ thống</span> → Thông tin chung</td><td class="field">Favicon</td></tr>
+    </table>
+</div>
+
+
+<h2 class="sec">Việc còn lại — cần lập trình bổ sung</h2>
+
+<div class="warn">
+    <strong>Năm nhóm sau chưa có màn hình sửa trong admin.</strong>
+    Nội dung đã nằm trong cơ sở dữ liệu (bảng <code>home_features</code>) và trang chủ đọc từ đó,
+    nhưng hiện chỉ sửa được bằng cách vào thẳng cơ sở dữ liệu:
+    <ul style="margin:8px 0 0;padding-left:20px">
+        <li><code>hero_usp</code> — 4 điểm mạnh dưới banner <em>(khối 2)</em></li>
+        <li><code>commit</code> — 5 chỉ số dải cam kết <em>(khối 3)</em></li>
+        <li><code>about_badge</code> — 3 huy hiệu <em>(khối 4)</em></li>
+        <li><code>why_waco</code> — 6 lý do <em>(khối 6)</em></li>
+        <li><code>stat</code> — 4 ô con số mạng lưới <em>(khối 7)</em></li>
+    </ul>
+</div>
+
+<div class="warn" style="margin-top:12px">
+    <strong>Hai bảng dữ liệu khách gửi về cũng chưa có màn hình xem:</strong>
+    <ul style="margin:8px 0 0;padding-left:20px">
+        <li><code>dealer_registrations</code> — đơn đăng ký làm đại lý</li>
+        <li><code>dealers</code> — danh sách điểm bán để vẽ lên bản đồ</li>
+    </ul>
+    Yêu cầu tư vấn gửi từ popup và form liên hệ thì đã xem được ở module <span class="where">Liên hệ</span>.
+</div>
+
+
+<h2 class="sec">Ba thao tác hay dùng nhất</h2>
+
+<div class="block">
+    <h3>Đổi ảnh banner trang chủ</h3>
+    <ol class="steps">
+        <li>Vào <span class="where">Slide</span></li>
+        <li>Mở bản ghi <strong>Banner trang chủ</strong> (từ khóa <code>main-slide</code>)</li>
+        <li>Bấm vào ô ảnh → chọn ảnh mới → Lưu</li>
+    </ol>
+    <p class="note">Ảnh nên rộng khoảng <strong>1920 × 870 px</strong>. Chữ nằm bên trái nên chủ thể ảnh đặt lệch sang phải sẽ đẹp nhất.</p>
+</div>
+
+<div class="block">
+    <h3>Đổi 4 bài tin trên trang chủ</h3>
+    <ol class="steps">
+        <li>Viết bài mới ở <span class="where">Bài viết</span> — nhớ điền <strong>Mô tả ngắn</strong> và <strong>Ảnh đại diện</strong></li>
+        <li>Vào <span class="where">Widget</span> → mở <code>homepage-news</code></li>
+        <li>Bỏ chọn bài cũ, chọn bài mới (chọn đúng 4 bài)</li>
+        <li>Lưu — trang chủ đổi ngay</li>
+    </ol>
+</div>
+
+<div class="block">
+    <h3>Đổi số điện thoại / email toàn site</h3>
+    <ol class="steps">
+        <li>Vào <span class="where">Cấu hình hệ thống</span> → thẻ <strong>Thông tin liên hệ</strong></li>
+        <li>Sửa ô <strong>Hotline</strong> và <strong>Email</strong> → Lưu</li>
+    </ol>
+    <p class="note">Sửa một chỗ này là đổi đồng thời ở chân trang, nút gọi nổi, nút Zalo và trang Liên hệ.</p>
+</div>
+
+<footer class="bot">
+    Hướng dẫn quản trị Trang chủ — website WACO Việt Nam<br>
+    In tài liệu này: mở bằng trình duyệt rồi bấm Ctrl&nbsp;+&nbsp;P (chọn “Lưu thành PDF” nếu cần gửi đi)
+</footer>
+
+</div>
+</body>
+</html>
