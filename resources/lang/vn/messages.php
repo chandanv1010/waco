@@ -613,6 +613,51 @@ return [
             'title' => 'Xóa nhà phân phối'
         ],
     ],
+    'homeFeature' => [
+        'index' => [
+            'title' => 'Nội dung các khối trang chủ',
+            'table' => 'Danh sách mục trong các khối'
+        ],
+        'create' => [
+            'title' => 'Thêm mục vào khối trang chủ'
+        ],
+        'edit' => [
+            'title' => 'Sửa mục trong khối trang chủ'
+        ],
+        'delete' => [
+            'title' => 'Xóa mục khỏi khối trang chủ'
+        ],
+    ],
+    'dealer' => [
+        'index' => [
+            'title' => 'Quản lý điểm bán / đại lý',
+            'table' => 'Danh sách điểm bán'
+        ],
+        'create' => [
+            'title' => 'Thêm mới điểm bán'
+        ],
+        'edit' => [
+            'title' => 'Cập nhật điểm bán'
+        ],
+        'delete' => [
+            'title' => 'Xóa điểm bán'
+        ],
+    ],
+    'dealerRegistration' => [
+        'index' => [
+            'title' => 'Đơn đăng ký làm đại lý',
+            'table' => 'Danh sách đơn khách gửi'
+        ],
+        'create' => [
+            'title' => 'Đơn đăng ký làm đại lý'
+        ],
+        'edit' => [
+            'title' => 'Xử lý đơn đăng ký đại lý'
+        ],
+        'delete' => [
+            'title' => 'Xóa đơn đăng ký đại lý'
+        ],
+    ],
     'introduce' => [
         'index' => [
             'title' => 'Cấu hình Công nghệ',

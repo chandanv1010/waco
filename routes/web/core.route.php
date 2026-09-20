@@ -12,6 +12,9 @@ use App\Http\Controllers\Backend\V1\ContactController;
 use App\Http\Controllers\Backend\V1\LecturerController;
 use App\Http\Controllers\Backend\V1\DistributionAreaController;
 use App\Http\Controllers\Backend\V1\DistributionController;
+use App\Http\Controllers\Backend\V1\HomeFeatureController;
+use App\Http\Controllers\Backend\V1\DealerController;
+use App\Http\Controllers\Backend\V1\DealerRegistrationController;
 
 
 
@@ -120,6 +123,38 @@ Route::group(['middleware' => ['admin','locale','backend_default_locale']], func
         Route::post('{id}/update', [IntroduceController::class, 'update'])->where(['id' => '[0-9]+'])->name('introduce.update');
         Route::get('{id}/delete', [IntroduceController::class, 'delete'])->where(['id' => '[0-9]+'])->name('introduce.delete');
         Route::delete('{id}/destroy', [IntroduceController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('introduce.destroy');
+    });
+
+    // Noi dung cac khoi lap lai tren trang chu (bang home_features).
+    Route::group(['prefix' => 'home-feature'], function () {
+        Route::get('index', [HomeFeatureController::class, 'index'])->name('home.feature.index');
+        Route::get('create', [HomeFeatureController::class, 'create'])->name('home.feature.create');
+        Route::post('store', [HomeFeatureController::class, 'store'])->name('home.feature.store');
+        Route::get('{id}/edit', [HomeFeatureController::class, 'edit'])->where(['id' => '[0-9]+'])->name('home.feature.edit');
+        Route::post('{id}/update', [HomeFeatureController::class, 'update'])->where(['id' => '[0-9]+'])->name('home.feature.update');
+        Route::get('{id}/delete', [HomeFeatureController::class, 'delete'])->where(['id' => '[0-9]+'])->name('home.feature.delete');
+        Route::delete('{id}/destroy', [HomeFeatureController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('home.feature.destroy');
+    });
+
+    // Don dang ky lam dai ly - khai bao TRUOC nhom 'dealer' de duong dan
+    // dealer/registration/... khong bi nhom kia bat mat.
+    Route::group(['prefix' => 'dealer/registration'], function () {
+        Route::get('index', [DealerRegistrationController::class, 'index'])->name('dealer.registration.index');
+        Route::get('{id}/edit', [DealerRegistrationController::class, 'edit'])->where(['id' => '[0-9]+'])->name('dealer.registration.edit');
+        Route::post('{id}/update', [DealerRegistrationController::class, 'update'])->where(['id' => '[0-9]+'])->name('dealer.registration.update');
+        Route::get('{id}/delete', [DealerRegistrationController::class, 'delete'])->where(['id' => '[0-9]+'])->name('dealer.registration.delete');
+        Route::delete('{id}/destroy', [DealerRegistrationController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('dealer.registration.destroy');
+    });
+
+    // Diem ban / dai ly - nguon du lieu cho ban do trang "He thong dai ly".
+    Route::group(['prefix' => 'dealer'], function () {
+        Route::get('index', [DealerController::class, 'index'])->name('dealer.index');
+        Route::get('create', [DealerController::class, 'create'])->name('dealer.create');
+        Route::post('store', [DealerController::class, 'store'])->name('dealer.store');
+        Route::get('{id}/edit', [DealerController::class, 'edit'])->where(['id' => '[0-9]+'])->name('dealer.edit');
+        Route::post('{id}/update', [DealerController::class, 'update'])->where(['id' => '[0-9]+'])->name('dealer.update');
+        Route::get('{id}/delete', [DealerController::class, 'delete'])->where(['id' => '[0-9]+'])->name('dealer.delete');
+        Route::delete('{id}/destroy', [DealerController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('dealer.destroy');
     });
 
     Route::group(['prefix' => 'distribution/area'], function () {

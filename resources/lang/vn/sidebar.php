@@ -190,6 +190,32 @@ return [
             ]
         ],
         [
+            'title' => 'QL Trang chủ',
+            'icon' => 'fa fa-home',
+            'name' => ['home-feature'],
+            'subModule' => [
+                [
+                    'title' => 'Nội dung các khối',
+                    'route' => 'home-feature/index'
+                ],
+            ]
+        ],
+        [
+            'title' => 'QL Đại lý',
+            'icon' => 'fa fa-handshake-o',
+            'name' => ['dealer'],
+            'subModule' => [
+                [
+                    'title' => 'Đơn đăng ký đại lý',
+                    'route' => 'dealer/registration/index'
+                ],
+                [
+                    'title' => 'Điểm bán trên bản đồ',
+                    'route' => 'dealer/index'
+                ],
+            ]
+        ],
+        [
             'title' => 'Quản lý Giới thiệu',
             'icon' => 'fa fa-info-circle',
             'name' => ['introduce'],
