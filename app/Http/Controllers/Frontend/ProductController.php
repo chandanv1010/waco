@@ -7,6 +7,7 @@ use App\Repositories\Product\ProductCatalogueRepository;
 use App\Repositories\Product\ProductRepository;
 use App\Services\V1\Core\WidgetService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Trang chi tiet san pham.
@@ -58,10 +59,39 @@ class ProductController extends FrontendController
             'product' => $product,
             'productCatalogue' => $productCatalogue,
             'album' => $album,
+            'lienQuan' => $this->sanPhamLienQuan($product),
             // Khoi "He sinh thai san pham WACO" o cuoi trang - cung widget voi
             // trang chu, khong truy van rieng.
             'categories' => $this->danhMucQuaWidget(),
         ]);
+    }
+
+    /**
+     * 4 san pham khac cung danh muc, bo chinh san pham dang xem.
+     *
+     * Tra ve dung hinh dang ma the san pham can: ten, canonical va mo ta nam
+     * thang tren dong (join bang ngon ngu) chu khong qua quan he ->languages -
+     * neu khong moi the lai them mot truy van.
+     */
+    private function sanPhamLienQuan($product): Collection
+    {
+        if (empty($product->product_catalogue_id)) {
+            return collect();
+        }
+
+        return DB::table('products as p')
+            ->join('product_language as pl', function ($join) {
+                $join->on('pl.product_id', '=', 'p.id')
+                     ->where('pl.language_id', '=', $this->language);
+            })
+            ->where('p.product_catalogue_id', $product->product_catalogue_id)
+            ->where('p.id', '!=', $product->id)
+            ->where('p.publish', 2)
+            ->whereNull('p.deleted_at')
+            ->orderBy('p.order')
+            ->orderByDesc('p.id')
+            ->limit(4)
+            ->get(['p.id', 'p.code', 'p.image', 'pl.name', 'pl.canonical', 'pl.description']);
     }
 
     /**

@@ -65,31 +65,48 @@
             </div>
         @endforeach
 
+        {{--
+            Cot ngoai cung: toan bo lay tu Cau hinh he thong > Thong tin lien he.
+
+            Mot o co the chua nhieu so ngan cach bang dau "|" (vi du hotline
+            khieu nai "0377622266 | 0399622266") nen phai tach ra tung so mot
+            de moi so la mot lien ket bam goi duoc.
+        --}}
+        @php
+            $khoiLienHe = [
+                ['khoa' => 'contact_office', 'nhan' => 'Địa chỉ công ty', 'icon' => 'pin', 'kieu' => 'chu'],
+                ['khoa' => 'contact_address', 'nhan' => 'Văn phòng giao dịch', 'icon' => 'pin', 'kieu' => 'chu'],
+                ['khoa' => 'contact_hotline', 'nhan' => 'Hotline', 'icon' => 'phone', 'kieu' => 'dienThoai'],
+                ['khoa' => 'contact_complaint', 'nhan' => 'Hotline khiếu nại', 'icon' => 'phone', 'kieu' => 'dienThoai'],
+                ['khoa' => 'contact_email', 'nhan' => 'Email', 'icon' => 'mail', 'kieu' => 'email'],
+                ['khoa' => 'contact_website', 'nhan' => 'Website', 'icon' => 'globe', 'kieu' => 'chu'],
+            ];
+        @endphp
+
         <div>
-            @if(!empty($system['contact_address']))
+            <h3 class="waco-footer__title">Thông tin liên hệ</h3>
+
+            @foreach($khoiLienHe as $muc)
+                @continue(empty($system[$muc['khoa']]))
+                @php $giaTri = trim($system[$muc['khoa']]); @endphp
+
                 <div class="waco-footer__contact">
-                    @include('frontend.component.waco-icon', ['name' => 'pin', 'size' => 15])
-                    <span>{{ $system['contact_address'] }}</span>
+                    @include('frontend.component.waco-icon', ['name' => $muc['icon'], 'size' => 15])
+                    <span>
+                        <span class="waco-footer__contact-label">{{ $muc['nhan'] }}:</span>
+                        @if($muc['kieu'] === 'dienThoai')
+                            @foreach(array_filter(array_map('trim', explode('|', $giaTri))) as $i => $so)
+                                @if($i > 0) <span aria-hidden="true">·</span> @endif
+                                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $so) }}">{{ $so }}</a>
+                            @endforeach
+                        @elseif($muc['kieu'] === 'email')
+                            <a href="mailto:{{ $giaTri }}">{{ $giaTri }}</a>
+                        @else
+                            {{ $giaTri }}
+                        @endif
+                    </span>
                 </div>
-            @endif
-            @if(!empty($system['contact_hotline']))
-                <div class="waco-footer__contact">
-                    @include('frontend.component.waco-icon', ['name' => 'phone', 'size' => 15])
-                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $system['contact_hotline']) }}">{{ $system['contact_hotline'] }}</a>
-                </div>
-            @endif
-            @if(!empty($system['contact_email']))
-                <div class="waco-footer__contact">
-                    @include('frontend.component.waco-icon', ['name' => 'mail', 'size' => 15])
-                    <a href="mailto:{{ $system['contact_email'] }}">{{ $system['contact_email'] }}</a>
-                </div>
-            @endif
-            @if(!empty($system['contact_website']))
-                <div class="waco-footer__contact">
-                    @include('frontend.component.waco-icon', ['name' => 'globe', 'size' => 15])
-                    <span>{{ $system['contact_website'] }}</span>
-                </div>
-            @endif
+            @endforeach
         </div>
     </div>
 

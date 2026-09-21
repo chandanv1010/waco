@@ -4,7 +4,12 @@
 @php
     $tenDanhMuc = $productCatalogue->name ?? 'Sản phẩm';
     $urlDanhMuc = !empty($productCatalogue->canonical) ? write_url($productCatalogue->canonical, true, true) : '';
-    $tenHienThi = $product->code ?: $product->name;
+
+    // Ten san pham la tieu de chinh, ma san pham la thong tin phu.
+    $tenHienThi = $product->name ?: $product->code;
+    // Chi hien dong "Ma san pham" khi that su co ma va ma khac ten - tranh
+    // lap lai y het tieu de ngay ben duoi no.
+    $maSanPham = ($product->code && $product->code !== $product->name) ? $product->code : '';
 
     // Anh chinh dung dau, sau do la cac anh trong album.
     $anh = array_values(array_filter(array_merge([$product->image], $album)));
@@ -34,8 +39,10 @@
 
 <main class="waco">
 
+    {{-- Tieu de banner lay theo danh muc cua san pham chu khong ghi cung
+         "Chi tiet san pham" - vao may loc nuoc thi phai thay "May loc nuoc". --}}
     @include('frontend.component.waco-banner', [
-        'title' => 'Chi tiết sản phẩm',
+        'title' => $tenDanhMuc,
         'crumbs' => [
             'Sản phẩm' => write_url('san-pham', true, true),
             $tenDanhMuc => $urlDanhMuc,
@@ -100,8 +107,8 @@
 
                 <h1 class="waco-detail__title">{{ $tenHienThi }}</h1>
 
-                @if($product->code && $product->code !== $product->name)
-                    <p class="waco-detail__subtitle">{{ $product->name }}</p>
+                @if($maSanPham)
+                    <p class="waco-detail__code">Mã sản phẩm: <strong>{{ $maSanPham }}</strong></p>
                 @endif
 
                 @if(count($diemManh))
@@ -187,6 +194,22 @@
         </div>
     </section>
 
+    {{-- SAN PHAM LIEN QUAN -------------------------------------------------- --}}
+    @if($lienQuan->count())
+        <section class="waco__section waco-related">
+            <div class="waco__container">
+                <h2 class="waco__heading">Sản phẩm liên quan</h2>
+                <p class="waco__subheading">Các sản phẩm khác cùng {{ mb_strtolower($tenDanhMuc) }}</p>
+
+                <div class="waco-related__grid">
+                    @foreach($lienQuan as $item)
+                        @include('frontend.component.waco-product-card', ['product' => $item])
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- HE SINH THAI SAN PHAM WACO ----------------------------------------- --}}
     @include('frontend.component.waco-ecosystem')
 
@@ -237,17 +260,24 @@ document.addEventListener('DOMContentLoaded', function () {
         // Dai anh nho chay doc. Chi khoi dong khi co Swiper; khong co thi cot
         // anh van cuon duoc binh thuong.
         if (typeof Swiper !== 'undefined' && document.querySelector('.waco-gallery__thumbs')) {
+            // slidesPerView: 'auto' chu khong phai mot con so co dinh.
+            //
+            // Khung anh lon la hinh vuong nen chieu cao dai anh nho doi theo be
+            // ngang man hinh. Neu ep 5 o moi man hinh thi Swiper tuong tat ca
+            // deu vua, khoa luon hai nut len/xuong, va o cuoi (video) bi cat
+            // mat khong cach nao xem duoc. De 'auto' thi Swiper do theo chieu
+            // cao that cua tung o (96px) va tu biet khi nao can cuon.
             new Swiper('.waco-gallery__thumbs', {
                 direction: 'vertical',
-                slidesPerView: 5,
+                slidesPerView: 'auto',
                 spaceBetween: 12,
                 navigation: {
                     prevEl: '.waco-gallery__nav--prev',
                     nextEl: '.waco-gallery__nav--next'
                 },
                 breakpoints: {
-                    0:   { direction: 'horizontal', slidesPerView: 4 },
-                    769: { direction: 'vertical', slidesPerView: 5 }
+                    0:   { direction: 'horizontal' },
+                    769: { direction: 'vertical' }
                 }
             });
         }
