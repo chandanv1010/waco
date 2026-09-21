@@ -35,7 +35,7 @@
         @endif
         <h3 class="waco-news-card__title">{{ $ten }}</h3>
         @if(!empty($moTa))
-            <p class="waco-news-card__description">{{ Str::limit(strip_tags($moTa), 110) }}</p>
+            <p class="waco-news-card__description">{{ Str::limit(plain_text($moTa), 110) }}</p>
         @endif
     </div>
 </a>

@@ -44,7 +44,7 @@
                             <a href="{{ $fUrl }}">{{ $featured->name }}</a>
                         </h2>
                         <p class="waco-feature-post__description">
-                            {{ Str::limit(strip_tags($featured->description ?? ''), 260) }}
+                            {{ Str::limit(plain_text($featured->description), 260) }}
                         </p>
                         <a href="{{ $fUrl }}" class="waco-btn waco-btn--sm">
                             Xem chi tiết

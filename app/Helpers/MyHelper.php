@@ -829,3 +829,65 @@ if (!function_exists('youtube_id')) {
         return '';
     }
 }
+if (!function_exists('plain_text')) {
+    /**
+     * Doi noi dung CKEditor thanh chu thuan de in ra giao dien.
+     *
+     * O "Mo ta ngan" trong trang quan tri la CKEditor, nen thu luu xuong CSDL
+     * khong phai chu thuan ma la HTML. Dung strip_tags() khong thoi se sinh ra
+     * hai loi thay duoc ngay tren website:
+     *
+     *   1. Chu co dau va ky tu dac biet bi CKEditor luu duoi dang HTML entity
+     *      (&agrave; &acirc; &amp; &nbsp; ...). strip_tags() chi go the chu
+     *      khong giai ma entity, nen giao dien in ra nguyen chuoi "&agrave;"
+     *      thay vi chu "a" co dau - dung cai ma nguoi dung thay la "loi ky tu".
+     *
+     *   2. CKEditor xuong dong bang the <p>/<br> chu khong bang ky tu xuong
+     *      dong. strip_tags() go the ma khong de lai gi thay the, nen ba dong
+     *      thong so bi dinh lien thanh mot doan dai.
+     *
+     * Ham nay xu ly ca hai truoc khi tra ve chu thuan.
+     */
+    function plain_text(?string $html): string
+    {
+        $html = (string) $html;
+
+        if (trim($html) === '') {
+            return '';
+        }
+
+        // Giu lai cho xuong dong cua CKEditor truoc khi go the.
+        $html = preg_replace('~<br\s*/?>~i', "\n", $html);
+        $html = preg_replace('~</(?:p|div|li|tr|h[1-6])\s*>~i', "\n", $html);
+
+        $text = strip_tags($html);
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        // &nbsp; sau khi giai ma la khoang trang cung (U+00A0): nhin giong
+        // khoang trang thuong nhung khong cho xuong dong va lam Str::limit dem
+        // sai, nen doi ve khoang trang thuong.
+        $text = str_replace("\xC2\xA0", ' ', $text);
+
+        // Gop khoang trang thua nhung van giu ky tu xuong dong.
+        $text = preg_replace('~[^\S\r\n]+~u', ' ', $text);
+
+        return trim($text);
+    }
+}
+if (!function_exists('text_lines')) {
+    /**
+     * Tach "Mo ta ngan" thanh danh sach dong de in ra gach dau dong.
+     *
+     * Quan tri go moi y mot dong, giao dien hien thanh danh sach. Dong trong
+     * bi bo qua de khong sinh ra dau cham tron rong.
+     */
+    function text_lines(?string $html): array
+    {
+        $dong = preg_split('/\r\n|\r|\n/', plain_text($html));
+
+        return array_values(array_filter(
+            array_map('trim', $dong),
+            fn ($d) => $d !== ''
+        ));
+    }
+}

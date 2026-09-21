@@ -47,10 +47,7 @@
                         @php
                             // Moi loi ich mot dong trong bang introduces -> tach ra
                             // thanh danh sach co dau tich, admin sua khong can code.
-                            $loiIch = array_values(array_filter(array_map(
-                                'trim',
-                                preg_split('/\r\n|\r|\n/', strip_tags($intro['product_sidebar_benefits'] ?? ''))
-                            )));
+                            $loiIch = text_lines($intro['product_sidebar_benefits'] ?? '');
                         @endphp
 
                         @if(count($loiIch))
@@ -81,7 +78,7 @@
                             $doanMoTa = $moTa ?: ($intro['ecosystem_description'] ?? '');
                         @endphp
                         @if(!empty($doanMoTa))
-                            <p class="waco-shop__description">{{ strip_tags($doanMoTa) }}</p>
+                            <p class="waco-shop__description">{{ plain_text($doanMoTa) }}</p>
                         @endif
                     </div>
 

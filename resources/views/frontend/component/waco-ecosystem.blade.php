@@ -25,13 +25,12 @@
                             // doc ra mot tu khac han. Str::words cat theo tu nen khong bao
                             // gio lam hong chu.
                             //
-                            // html_entity_decode chay TRUOC strip_tags: quan tri go trong
+                            // plain_text() go the VA giai ma entity: quan tri go trong
                             // trinh soan thao nen mo ta hay lan &nbsp; &amp; &#39;, khong
-                            // giai ma thi in nguyen chuoi do ra man hinh.
+                            // giai ma thi in nguyen chuoi do ra man hinh. No cung doi
+                            // </p> thanh ky tu xuong dong nen hai cau khong dinh lien.
                             $moTaNgan = Str::words(
-                                trim(preg_replace('/\s+/u', ' ',
-                                    html_entity_decode(strip_tags($lang->description ?? ''), ENT_QUOTES, 'UTF-8')
-                                )),
+                                trim(preg_replace('/\s+/u', ' ', plain_text($lang->description))),
                                 20,
                                 '…'
                             );

@@ -18,18 +18,11 @@
     $maVideo = youtube_id($product->iframe ?? '');
 
     // Mo ta ngan luu moi y mot dong -> tach ra thanh danh sach gach dau dong.
-    $diemManh = array_values(array_filter(array_map(
-        'trim',
-        preg_split('/\r\n|\r|\n/', strip_tags($product->description ?? ''))
-    )));
+    $diemManh = text_lines($product->description);
 
     // Thong so ky thuat: moi dong mot dong "Ten: Gia tri" -> bang hai cot.
     $thongSo = [];
-    foreach (preg_split('/\r\n|\r|\n/', (string) ($product->specification ?? '')) as $dong) {
-        $dong = trim(strip_tags($dong));
-        if ($dong === '') {
-            continue;
-        }
+    foreach (text_lines($product->specification) as $dong) {
         $phan = explode(':', $dong, 2);
         $thongSo[] = count($phan) === 2
             ? ['ten' => trim($phan[0]), 'giaTri' => trim($phan[1])]

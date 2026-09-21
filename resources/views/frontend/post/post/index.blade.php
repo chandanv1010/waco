@@ -26,7 +26,7 @@
                 </div>
 
                 @if(!empty($post->description))
-                    <p class="waco-article__lead">{{ strip_tags($post->description) }}</p>
+                    <p class="waco-article__lead">{{ plain_text($post->description) }}</p>
                 @endif
 
                 @if(!empty($post->image))

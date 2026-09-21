@@ -6,15 +6,13 @@
      * anh nam trong cung nen do chu khong co khung rieng. Tieu de la ma may, ben
      * duoi la vai thong so gach dau dong, cuoi cung la hai nut.
      *
-     * Mo ta ngan luu moi thong so mot dong trong CSDL -> tach theo ky tu xuong
-     * dong. Admin chi can go moi dong mot y, khong phai go the HTML.
+     * Mo ta ngan luu moi thong so mot dong. Admin chi can go moi dong mot y,
+     * khong phai go the HTML - text_lines() lo phan con lai du o quan tri go
+     * chu thuan hay CKEditor luu xuong thanh HTML.
      */
     $url = write_url($product->canonical, true, true);
 
-    $thongSo = array_values(array_filter(array_map(
-        'trim',
-        preg_split('/\r\n|\r|\n/', strip_tags($product->description ?? ''))
-    )));
+    $thongSo = text_lines($product->description);
 @endphp
 
 <article class="waco-product-card">
