@@ -466,12 +466,42 @@ $bp-sm: 480px;
         display: flex;
         flex-wrap: wrap;
         gap: 14px;
+
+        // Man hinh hep: hai nut chia doi be ngang va nam cung mot hang. Dung
+        // grid 1fr 1fr chu khong phai flex: 1 - grid cho hai o BANG NHAU that
+        // su, con flex se chia theo do dai chu ben trong nen nut "Xem ho so
+        // nang luc" se rong hon han nut kia.
+        @media (max-width: $bp-md) {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+
+            // Nut goc rong rai cho ban desktop: chu cach icon 28px, dem 24px
+            // moi ben. Nhet vao mot nua man hinh thi phai bo lai, khong thi
+            // chu bi xe vun ra nhieu dong.
+            .waco-btn {
+                gap: 8px;
+                padding: 12px;
+                font-size: 11px;
+                letter-spacing: 0.02em;
+            }
+        }
     }
 }
 
 .waco-usp {
     // Icon cat tu chinh file thiet ke Figma (PNG da tach nen), khong ve lai.
     // Kich thuoc bam theo ban thiet ke (~52px) chu khong thu nho lai.
+
+    // Man hinh hep: icon va chu dung CANH NHAU tren cung mot dong, khong xep
+    // chong nua. Khoi noi dung duoi slide nho ngang nhung thua doc, nen dat
+    // ngang lai vua do cao vua de doc hon.
+    @media (max-width: $bp-md) {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
     &__icon {
         display: block;
         margin-bottom: 10px;
@@ -482,9 +512,12 @@ $bp-sm: 480px;
         }
 
         // Trong khung chu hep cua ban mobile, icon 52px choan gan het o - thu
-        // lai cho can doi voi dong chu ben duoi.
+        // lai cho can doi voi dong chu ben canh.
         @media (max-width: $bp-md) {
-            margin-bottom: 6px;
+            // flex-shrink mac dinh la 1: khong khoa lai thi o hep icon se bi
+            // bop meo thay vi giu nguyen ti le.
+            flex: none;
+            margin-bottom: 0;
 
             img {
                 height: 38px;
