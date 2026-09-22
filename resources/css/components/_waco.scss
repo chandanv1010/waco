@@ -484,6 +484,18 @@ $bp-sm: 480px;
                 padding: 12px;
                 font-size: 11px;
                 letter-spacing: 0.02em;
+
+                // Chu tren nut xuong hai dong CAN NHAU: "Tro thanh / dai ly"
+                // chu khong phai "Tro thanh dai / ly". Trinh duyet mac dinh
+                // nhoi chu day dong dau roi de lai mot tu lac long o dong hai.
+                //
+                // Dung text-wrap thay vi chen <br> cung vao view: chu tren nut
+                // do quan tri nhap trong bang introduces, ghi cho ngat dong
+                // vao ma nguon thi admin sua chu la hong.
+                //
+                // Trinh duyet cu khong hieu thuoc tinh nay se ngat dong nhu
+                // truoc - xau hon mot chut chu khong vo layout.
+                text-wrap: balance;
             }
         }
     }
