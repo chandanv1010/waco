@@ -101,7 +101,7 @@ class WacoGalleryTest extends TestCase
 
         $html = $this->docTrang($this->duongDanBai);
 
-        $this->assertStringNotContainsString('waco-gallery', $html);
+        $this->assertStringNotContainsString('waco-album', $html);
         $this->assertStringNotContainsString('data-waco-lightbox-hop', $html);
     }
 
@@ -115,7 +115,7 @@ class WacoGalleryTest extends TestCase
 
         $html = $this->docTrang($this->duongDanBai);
 
-        $this->assertSame(3, substr_count($html, 'waco-gallery__item'), 'Số ảnh trong lưới không đúng');
+        $this->assertSame(3, substr_count($html, 'waco-album__item'), 'Số ảnh trong lưới không đúng');
         $this->assertStringContainsString('/uploads/waco/tin-2.png', $html);
 
         // Khung phong to phai co mat, khong thi bam vao anh khong ra gi.
@@ -138,10 +138,10 @@ class WacoGalleryTest extends TestCase
     {
         // Quan tri xoa het anh thi cot con chuoi rong chu khong phai null.
         DB::table('posts')->where('id', $this->maBai)->update(['album' => '']);
-        $this->assertStringNotContainsString('waco-gallery', $this->docTrang($this->duongDanBai));
+        $this->assertStringNotContainsString('waco-album', $this->docTrang($this->duongDanBai));
 
         DB::table('posts')->where('id', $this->maBai)->update(['album' => '[]']);
-        $this->assertStringNotContainsString('waco-gallery', $this->docTrang($this->duongDanBai));
+        $this->assertStringNotContainsString('waco-album', $this->docTrang($this->duongDanBai));
     }
 
     public function test_huy_hieu_khong_gan_bai_thi_khong_phai_lien_ket(): void

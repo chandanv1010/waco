@@ -68,7 +68,7 @@
             function mo(nut) {
                 // Gom cac anh CUNG MOT luoi voi nut vua bam; trang co hai luoi
                 // thi moi luoi la mot bo rieng.
-                var khoi = nut.closest('.waco-gallery') || document;
+                var khoi = nut.closest('.waco-album') || document;
                 danhSach = Array.prototype.slice.call(khoi.querySelectorAll('[data-waco-lightbox]'));
                 viTri = danhSach.indexOf(nut);
                 if (viTri < 0) viTri = 0;

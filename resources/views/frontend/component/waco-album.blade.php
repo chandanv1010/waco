@@ -17,9 +17,9 @@
 @endphp
 
 @if(count($danhSachAnh))
-    <div class="waco-gallery">
+    <div class="waco-album">
         @foreach($danhSachAnh as $chiSo => $anh)
-            <a href="{{ $anh }}" class="waco-gallery__item" data-waco-lightbox>
+            <a href="{{ $anh }}" class="waco-album__item" data-waco-lightbox>
                 <img src="{{ $anh }}"
                      alt="{{ $tenBai ? $tenBai . ' - ảnh ' . ($chiSo + 1) : 'Ảnh ' . ($chiSo + 1) }}"
                      loading="lazy" decoding="async">

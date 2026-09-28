@@ -25,15 +25,12 @@
                             </a>
                         </li>
                         @foreach($danhMuc as $cat)
-                            <li>
-                                <a href="{{ write_url($cat->canonical, true, true) }}"
-                                   class="waco-catnav__link{{ (int) $cat->id === $danhMucHienTai ? ' is-active' : '' }}">
-                                    @if(!empty($cat->icon))
-                                        <img src="{{ $cat->icon }}" alt="" aria-hidden="true" loading="lazy">
-                                    @endif
-                                    <span>{{ $cat->name }}</span>
-                                </a>
-                            </li>
+                            @include('frontend.component.waco-catnav-node', [
+                                'cat' => $cat,
+                                'cap' => 1,
+                                'danhMucHienTai' => $danhMucHienTai,
+                                'nhanhDangXem' => $nhanhDangXem ?? [],
+                            ])
                         @endforeach
                     </ul>
                 </div>

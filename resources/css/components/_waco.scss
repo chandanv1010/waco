@@ -2147,6 +2147,53 @@ $waco-cat-colors: #2f7de1, #1fb6b0, #3aa655, #f0912f, #8b6ce0, #16b5c9;
                 background: $waco-blue;
             }
         }
+
+        // Danh muc CHA cua muc dang xem: to dam nhung khong co nen va thanh
+        // xanh - de nguoi dung biet minh dang o nhanh nao ma khong nham la
+        // dang mo hai danh muc cung luc.
+        &.is-nhanh {
+            color: $waco-navy;
+            font-weight: 700;
+        }
+    }
+
+    // Danh muc con: thut vao va nho hon, de nhin la biet thuoc muc nao ben
+    // tren. Duong ke doc chay theo ca nhom con thay cho dau gach dau dong.
+    &__con {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__muc--cap2 > .waco-catnav__link {
+        padding-left: 34px;
+        font-size: 12.5px;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 22px;
+            width: 1px;
+            background: $waco-line;
+        }
+    }
+
+    &__muc--cap3 > .waco-catnav__link {
+        padding-left: 50px;
+        color: $waco-muted;
+        font-size: 12.5px;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 38px;
+            width: 1px;
+            background: $waco-line;
+        }
     }
 }
 
@@ -2971,11 +3018,15 @@ $waco-cat-colors: #2f7de1, #1fb6b0, #3aa655, #f0912f, #8b6ce0, #16b5c9;
     }
 }
 
-// --- Luoi anh album + lightbox -----------------------------------------------
+// --- Luoi anh album cua bai viet + lightbox ----------------------------------
 //
-// Dung cho anh trong album bai viet: ba anh mot hang tren may tinh, hai anh
-// tren may tinh bang, mot anh tren dien thoai.
-.waco-gallery {
+// Ba anh mot hang tren may tinh, hai anh tren may tinh bang, mot anh tren dien
+// thoai.
+//
+// KHONG dat ten .waco-album: ten do da thuoc ve thu vien anh cua trang chi
+// tiet san pham (dai anh nho doc ben trai + khung lon ben phai). File nay nap
+// sau nen mot lop trung ten se de len het, lam khung anh san pham co lai.
+.waco-album {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
