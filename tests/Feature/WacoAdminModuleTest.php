@@ -48,7 +48,18 @@ class WacoAdminModuleTest extends TestCase
     {
         $user = $this->quanTri();
 
-        $this->actingAs($user)->get('/home-feature/create')->assertOk();
+        $html = $this->actingAs($user)->get('/home-feature/create')->assertOk()->getContent();
+
+        // O chon bai viet phai co du danh sach bai dang hien thi, khong thi
+        // quan tri mo ra chi thay moi dong "khong lien ket".
+        $this->assertStringContainsString('name="post_id"', $html);
+        $tenBai = \Illuminate\Support\Facades\DB::table('post_language')
+            ->where('language_id', config('app.language_id') ?: 1)
+            ->value('name');
+        if ($tenBai) {
+            $this->assertStringContainsString(e($tenBai), $html, 'O chon bai viet khong co bai nao');
+        }
+
         $this->actingAs($user)->get('/dealer/create')->assertOk();
 
         $feature = HomeFeature::orderBy('id')->firstOrFail();
@@ -94,6 +105,50 @@ class WacoAdminModuleTest extends TestCase
             ->assertRedirect(route('home.feature.index'));
 
         $this->assertNull(HomeFeature::find($muc->id), 'Khong xoa duoc muc');
+    }
+
+    public function test_gan_bai_viet_vao_huy_hieu_va_go_ra_duoc(): void
+    {
+        $user = $this->quanTri();
+
+        $maBai = (int) \Illuminate\Support\Facades\DB::table('posts')
+            ->where('publish', 2)
+            ->whereNull('deleted_at')
+            ->min('id');
+
+        if (!$maBai) {
+            $this->markTestSkipped('Website chua co bai viet nao dang hien thi.');
+        }
+
+        $chung = [
+            'group' => 'about_badge',
+            'title' => 'Huy hieu thu nghiem tu dong',
+            'description' => '',
+            'value' => '',
+            'icon' => '',
+            'order' => 99,
+            'publish' => 2,
+        ];
+
+        $this->actingAs($user)
+            ->post('/home-feature/store', $chung + ['post_id' => $maBai])
+            ->assertRedirect(route('home.feature.index'));
+
+        $muc = HomeFeature::where('title', 'Huy hieu thu nghiem tu dong')->first();
+        $this->assertNotNull($muc, 'Khong luu duoc huy hieu moi');
+        $this->assertSame($maBai, (int) $muc->post_id, 'Khong luu duoc bai viet duoc gan');
+
+        // Chon lai "-- Khong lien ket --": o select gui len chuoi rong, phai
+        // thanh null chu khong phai 0 - de 0 thi quan he di tim bai viet id 0.
+        $this->actingAs($user)
+            ->post("/home-feature/{$muc->id}/update", $chung + ['post_id' => ''])
+            ->assertRedirect(route('home.feature.index'));
+
+        $muc->refresh();
+        $this->assertNull($muc->post_id, 'Go lien ket khong sach, con lai gia tri thua');
+
+        $this->actingAs($user)->delete("/home-feature/{$muc->id}/destroy");
+        $this->assertNull(HomeFeature::find($muc->id));
     }
 
     public function test_tieu_de_giu_nguyen_ky_tu_xuong_dong(): void

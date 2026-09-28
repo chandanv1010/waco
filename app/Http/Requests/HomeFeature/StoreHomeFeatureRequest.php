@@ -21,6 +21,7 @@ class StoreHomeFeatureRequest extends FormRequest
             'description' => 'nullable|string|max:191',
             'value' => 'nullable|string|max:50',
             'icon' => 'nullable|string|max:191',
+            'post_id' => 'nullable|integer|exists:posts,id',
             'order' => 'nullable|integer|min:0',
         ];
     }
@@ -35,6 +36,7 @@ class StoreHomeFeatureRequest extends FormRequest
             'description.max' => 'Mô tả tối đa 191 ký tự.',
             'value.max' => 'Con số tối đa 50 ký tự.',
             'icon.max' => 'Đường dẫn icon tối đa 191 ký tự.',
+            'post_id.exists' => 'Bài viết được chọn không còn tồn tại.',
             'order.integer' => 'Thứ tự phải là số nguyên.',
         ];
     }

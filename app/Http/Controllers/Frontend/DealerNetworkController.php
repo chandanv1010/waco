@@ -19,7 +19,7 @@ class DealerNetworkController extends FrontendController
         $seo = [
             'meta_title' => 'Hệ thống đại lý - ' . ($system['homepage_brand'] ?? 'WACO Việt Nam'),
             'meta_keyword' => 'đại lý WACO, hệ thống phân phối WACO',
-            'meta_description' => 'Hệ thống đại lý WACO phủ sóng 63 tỉnh thành với hơn 1.000 điểm bán hàng trên toàn quốc.',
+            'meta_description' => 'Hệ thống đại lý WACO phủ sóng 34 tỉnh thành với hơn 1.000 điểm bán hàng trên toàn quốc.',
             'meta_image' => $system['homepage_map_image'] ?? '',
             'canonical' => write_url('he-thong-dai-ly'),
         ];

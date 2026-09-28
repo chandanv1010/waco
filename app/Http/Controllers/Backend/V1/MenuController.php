@@ -87,13 +87,16 @@ class MenuController extends Controller
         $this->authorize('modules', 'menu.update');
         $language = $this->language;
 
+        // Sap xep TANG dan cho giong thu tu ngoai website: so nho nam tren.
+        // De DESC nhu cu thi danh sach trong quan tri hien nguoc voi trang chu,
+        // keo tha xong khong biet duong nao la dung.
         $menus = $this->menuRepository->findByCondition([
             ['menu_catalogue_id', '=', $id]
         ], TRUE, [
             'languages' => function($query) use ($language) {
                 $query->where('language_id',  $language);
             }
-        ], ['order', 'DESC']);
+        ], ['order', 'ASC']);
 
         $menuCatalogue = $this->menuCatalogueRepository->findById($id);
 
@@ -121,7 +124,7 @@ class MenuController extends Controller
             'languages' => function($query) use ($language) {
                 $query->where('language_id',  $language);
             }
-        ], ['order', 'DESC']);
+        ], ['order', 'ASC']);
         $menuList = $this->menuService->convertMenu($menus);
         $menuCatalogues = $this->menuCatalogueRepository->all();
         $menuCatalogue = $this->menuCatalogueRepository->findById($id);

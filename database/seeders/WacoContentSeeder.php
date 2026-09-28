@@ -535,7 +535,7 @@ Phù hợp phòng 30m²"],
 
             // Trang He thong dai ly
             'dealer_page_heading' => '1.000 ĐIỂM BÁN HÀNG TRÊN TOÀN QUỐC',
-            'dealer_page_content' => '<p>Hệ thống đại lý WACO đã phủ sóng 63 tỉnh thành với hơn 1.000 điểm bán hàng và trung tâm kỹ thuật, sẵn sàng tư vấn, lắp đặt và bảo hành cho khách hàng ở mọi khu vực.</p>'
+            'dealer_page_content' => '<p>Hệ thống đại lý WACO đã phủ sóng 34 tỉnh thành với hơn 1.000 điểm bán hàng và trung tâm kỹ thuật, sẵn sàng tư vấn, lắp đặt và bảo hành cho khách hàng ở mọi khu vực.</p>'
                 . '<p>Quý khách vui lòng liên hệ hotline hoặc gửi thông tin theo mẫu bên dưới để được kết nối tới đại lý gần nhất.</p>',
 
             // Trang Lien he
@@ -697,7 +697,7 @@ từ hãng", null, '/uploads/waco/icons/badge-ho-tro.png'],
             ['20+', 'NĂM KINH NGHIỆM', '/uploads/waco/icons/ck-kinh-nghiem.png'],
             ['100+', 'QUỐC GIA XUẤT KHẨU', '/uploads/waco/icons/ck-quoc-gia.png'],
             ['1000+', 'ĐẠI LÝ TOÀN QUỐC', '/uploads/waco/icons/ck-dai-ly.png'],
-            ['63', 'TỈNH THÀNH PHỦ SÓNG', '/uploads/waco/icons/ck-tinh-thanh.png'],
+            ['34', 'TỈNH THÀNH PHỦ SÓNG', '/uploads/waco/icons/ck-tinh-thanh.png'],
             ['2', 'THƯƠNG HIỆU CHỦ LỰC', '/uploads/waco/icons/ck-thuong-hieu.png'],
         ];
         foreach ($camKet as $i => [$value, $title, $icon]) {
@@ -711,7 +711,7 @@ từ hãng", null, '/uploads/waco/icons/badge-ho-tro.png'],
         // 4 con so mang luoi: `value` la so hien to, `title` la nhan ben duoi.
         $soLieu = [
             ['100+', 'Đại lý toàn quốc'],
-            ['63', 'Tỉnh thành phủ sóng'],
+            ['34', 'Tỉnh thành phủ sóng'],
             ['1000+', 'Điểm bán hàng'],
             ['20+', 'Năm kinh nghiệm'],
         ];

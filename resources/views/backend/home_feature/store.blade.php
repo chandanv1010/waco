@@ -75,6 +75,21 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
+                                    <label class="control-label text-left">Bài viết mở ra khi bấm</label>
+                                    <select name="post_id" class="form-control">
+                                        <option value="">-- Không liên kết, chỉ hiện icon --</option>
+                                        @foreach(($baiViet ?? []) as $maBai => $tenBai)
+                                            <option value="{{ $maBai }}" {{ (int) old('post_id', ($feature->post_id) ?? 0) === (int) $maBai ? 'selected' : '' }}>{{ $tenBai }}</option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-muted">Dùng cho khối "Huy hiệu khối giới thiệu": bấm vào huy hiệu sẽ mở bài viết này. Ảnh trong album của bài viết sẽ hiện thành lưới 3 ảnh một hàng, bấm vào phóng to.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb15">
+                            <div class="col-lg-6">
+                                <div class="form-row">
                                     <label class="control-label text-left">Thứ tự</label>
                                     <input
                                         type="number"

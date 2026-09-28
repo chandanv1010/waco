@@ -97,6 +97,9 @@ class HomeFeatureService extends BaseService
             'description' => $request->input('description'),
             'value' => $request->input('value'),
             'icon' => $request->input('icon'),
+            // O chon de trong gui len chuoi rong - phai doi ve null chu khong
+            // luu 0, neu khong quan he post() se di tim bai viet id = 0.
+            'post_id' => $request->input('post_id') ?: null,
             'order' => $request->integer('order'),
             'publish' => $request->integer('publish') ?: 2,
         ];

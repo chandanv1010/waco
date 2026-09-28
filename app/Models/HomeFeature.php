@@ -30,6 +30,7 @@ class HomeFeature extends Model
         'description',
         'value',
         'icon',
+        'post_id',
         'order',
         'publish',
     ];
@@ -42,6 +43,15 @@ class HomeFeature extends Model
         'why_waco'    => 'Vì sao chọn WACO (6 mục)',
         'stat'        => 'Số liệu mạng lưới đại lý (4 mục)',
     ];
+
+    /**
+     * Bai viet mo ra khi bam vao muc nay (hien dung cho 3 huy hieu khoi gioi
+     * thieu). Khong bat buoc - phan lon cac muc khac de trong.
+     */
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
 
     public function tenNhom(): string
     {

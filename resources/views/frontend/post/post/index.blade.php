@@ -40,6 +40,13 @@
                 <div class="waco-article__content">
                     {!! $post->content !!}
                 </div>
+
+                {{-- Anh trong album cua bai viet: luoi 3 anh mot hang, bam vao
+                     thi phong to. Bai khong co album thi component khong in gi. --}}
+                @include('frontend.component.waco-gallery', [
+                    'album' => $post->album,
+                    'ten' => $post->name,
+                ])
             </article>
         </div>
     </section>

@@ -24,20 +24,7 @@
                     {!! $intro['about_content'] ?? '' !!}
                 </div>
 
-                @if($aboutBadges->count())
-                    <div class="waco-about__badges">
-                        @foreach($aboutBadges as $badge)
-                            <div class="waco-badge">
-                                @if(!empty($badge->icon))
-                                    <span class="waco-badge__icon">
-                                        <img src="{{ $badge->icon }}" alt="" aria-hidden="true" loading="lazy">
-                                    </span>
-                                @endif
-                                <span class="waco-badge__title">{!! nl2br(e($badge->title)) !!}</span>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
+                @include('frontend.component.waco-badges', ['badges' => $aboutBadges])
             </div>
 
             <div class="waco-about__media">

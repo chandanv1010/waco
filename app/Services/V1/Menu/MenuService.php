@@ -166,8 +166,12 @@ class MenuService extends BaseService
     public function dragUpdate(array $json = [], int $menuCatalogueId = 0, int $languageId = 1 ,$parentId = 0){
         if(count($json)){
             foreach($json as $key => $val){
+                // Danh so TANG dan theo dung thu tu keo tha: muc dau tien
+                // duoc 0. Truoc day ghi `count($json) - $key` (giam dan) trong
+                // khi form nhap tay va frontend deu dung tang dan, nen keo xong
+                // la menu ngoai trang hien nguoc.
                 $update = [
-                    'order' => count($json) - $key,
+                    'order' => $key,
                     'parent_id' => $parentId,
                 ];
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HomeFeature\StoreHomeFeatureRequest;
 use App\Models\HomeFeature;
+use App\Models\Post;
 use App\Repositories\Core\HomeFeatureRepository;
 use App\Services\V1\Home\HomeFeatureService;
 use Illuminate\Http\Request;
@@ -57,6 +58,7 @@ class HomeFeatureController extends Controller
 
         return view('backend.dashboard.layout', compact('template', 'config') + [
             'nhom' => HomeFeature::NHOM,
+            'baiViet' => $this->danhSachBaiViet(),
         ]);
     }
 
@@ -80,6 +82,7 @@ class HomeFeatureController extends Controller
 
         return view('backend.dashboard.layout', compact('template', 'config', 'feature') + [
             'nhom' => HomeFeature::NHOM,
+            'baiViet' => $this->danhSachBaiViet(),
         ]);
     }
 
@@ -109,6 +112,28 @@ class HomeFeatureController extends Controller
             return redirect()->route('home.feature.index')->with('success', 'Xóa bản ghi thành công');
         }
         return redirect()->route('home.feature.index')->with('error', 'Xóa bản ghi không thành công. Hãy thử lại');
+    }
+
+    /**
+     * Danh sach bai viet cho o chon "Bam vao thi mo bai viet nao".
+     *
+     * Chi lay bai dang hien thi, moi nhat truoc. Tieu de doc tu post_language
+     * theo ngon ngu dang dung.
+     */
+    private function danhSachBaiViet(): array
+    {
+        // SetLocale dat san gia tri nay theo ngon ngu dang chon trong quan tri.
+        $languageId = config('app.language_id') ?: 1;
+
+        return Post::query()
+            ->join('post_language as pl', function ($join) use ($languageId) {
+                $join->on('pl.post_id', '=', 'posts.id')
+                     ->where('pl.language_id', '=', $languageId);
+            })
+            ->where('posts.publish', 2)
+            ->orderByDesc('posts.id')
+            ->pluck('pl.name', 'posts.id')
+            ->toArray();
     }
 
     private function config()

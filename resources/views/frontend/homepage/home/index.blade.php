@@ -62,22 +62,6 @@
                         @endforeach
                     </div>
                 @endif
-
-                <div class="waco-hero__actions">
-                    <a href="#dang-ky-dai-ly" class="waco-btn">
-                        {{ $intro['hero_cta_label'] ?? 'Trở thành đại lý' }}
-                        @include('frontend.component.waco-icon', ['name' => 'arrow-right'])
-                    </a>
-
-                    @if(!empty($intro['hero_cta2_label']))
-                        <a href="{{ !empty($system['homepage_company_profile']) ? $system['homepage_company_profile'] : '#' }}"
-                           class="waco-btn waco-btn--outline"
-                           @if(!empty($system['homepage_company_profile'])) download @endif>
-                            {{ $intro['hero_cta2_label'] }}
-                            @include('frontend.component.waco-icon', ['name' => 'download'])
-                        </a>
-                    @endif
-                </div>
             </div>
         </div>
     </section>
@@ -98,20 +82,7 @@
                     {!! $intro['about_content'] ?? '' !!}
                 </div>
 
-                @if($aboutBadges->count())
-                    <div class="waco-about__badges">
-                        @foreach($aboutBadges as $badge)
-                            <div class="waco-badge">
-                                @if(!empty($badge->icon))
-                                    <span class="waco-badge__icon">
-                                        <img src="{{ $badge->icon }}" alt="" aria-hidden="true" loading="lazy">
-                                    </span>
-                                @endif
-                                <span class="waco-badge__title">{!! nl2br(e($badge->title)) !!}</span>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
+                @include('frontend.component.waco-badges', ['badges' => $aboutBadges])
             </div>
 
             <div class="waco-about__media">

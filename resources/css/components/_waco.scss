@@ -461,44 +461,6 @@ $bp-sm: 480px;
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
-
-    &__actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-
-        // Man hinh hep: hai nut chia doi be ngang va nam cung mot hang. Dung
-        // grid 1fr 1fr chu khong phai flex: 1 - grid cho hai o BANG NHAU that
-        // su, con flex se chia theo do dai chu ben trong nen nut "Xem ho so
-        // nang luc" se rong hon han nut kia.
-        @media (max-width: $bp-md) {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-
-            // Nut goc rong rai cho ban desktop: chu cach icon 28px, dem 24px
-            // moi ben. Nhet vao mot nua man hinh thi phai bo lai, khong thi
-            // chu bi xe vun ra nhieu dong.
-            .waco-btn {
-                gap: 8px;
-                padding: 12px;
-                font-size: 11px;
-                letter-spacing: 0.02em;
-
-                // Chu tren nut xuong hai dong CAN NHAU: "Tro thanh / dai ly"
-                // chu khong phai "Tro thanh dai / ly". Trinh duyet mac dinh
-                // nhoi chu day dong dau roi de lai mot tu lac long o dong hai.
-                //
-                // Dung text-wrap thay vi chen <br> cung vao view: chu tren nut
-                // do quan tri nhap trong bang introduces, ghi cho ngat dong
-                // vao ma nguon thi admin sua chu la hong.
-                //
-                // Trinh duyet cu khong hieu thuoc tinh nay se ngat dong nhu
-                // truoc - xau hon mot chut chu khong vo layout.
-                text-wrap: balance;
-            }
-        }
-    }
 }
 
 .waco-usp {
@@ -733,6 +695,34 @@ $bp-sm: 480px;
         font-size: 12px;
         font-weight: 600;
         line-height: 1.4;
+    }
+
+    // Huy hieu co gan bai viet thi la the <a>. Bo gach chan mac dinh cua lien
+    // ket va them dau hieu bam duoc, chu khong doi bo cuc - ba o van phai deu
+    // nhau du chi mot o co lien ket.
+    &--link {
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform 0.15s ease;
+
+        .waco-badge__title {
+            transition: color 0.15s ease;
+        }
+
+        &:hover,
+        &:focus-visible {
+            transform: translateY(-2px);
+
+            .waco-badge__title {
+                color: $waco-blue;
+            }
+        }
+
+        &:focus-visible {
+            outline: 2px solid $waco-blue;
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
     }
 
     // Ba huy hieu nam mot hang tren man hinh hep: mot o chi rong khoang 110px,
@@ -2924,6 +2914,153 @@ $waco-cat-colors: #2f7de1, #1fb6b0, #3aa655, #f0912f, #8b6ce0, #16b5c9;
             border-color: #fff;
             background: #fff;
             color: $waco-navy;
+        }
+    }
+}
+
+// --- Luoi anh album + lightbox -----------------------------------------------
+//
+// Dung cho anh trong album bai viet: ba anh mot hang tren may tinh, hai anh
+// tren may tinh bang, mot anh tren dien thoai.
+.waco-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 26px 0 8px;
+
+    @media (max-width: $bp-md) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    @media (max-width: $bp-sm) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    &__item {
+        display: block;
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        // Cat deu ve khung 4:3: anh album do quan tri tai len, moi tam mot ti
+        // le khac nhau thi hang anh so le rat xau.
+        aspect-ratio: 4 / 3;
+        background: $waco-bg;
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.25s ease;
+        }
+
+        &:hover img,
+        &:focus-visible img {
+            transform: scale(1.04);
+        }
+
+        &:focus-visible {
+            outline: 2px solid $waco-blue;
+            outline-offset: 2px;
+        }
+    }
+}
+
+.waco-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+
+    // The mang thuoc tinh `hidden`, nhung display: flex o tren manh hon quy tac
+    // mac dinh cua trinh duyet - phai noi ro, khong thi hop luon hien.
+    &[hidden] {
+        display: none;
+    }
+
+    &__nen {
+        position: absolute;
+        inset: 0;
+        background: rgba(6, 18, 36, 0.88);
+    }
+
+    &__khung {
+        position: relative;
+        max-width: min(1100px, 100%);
+        max-height: 100%;
+        margin: 0;
+        text-align: center;
+
+        img {
+            display: block;
+            max-width: 100%;
+            // Tru cho dong so thu tu ben duoi, khong thi anh cao che mat no.
+            max-height: calc(100vh - 110px);
+            margin: 0 auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        figcaption {
+            margin-top: 12px;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 13px;
+        }
+    }
+
+    &__nut {
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+        font-size: 30px;
+        line-height: 1;
+        cursor: pointer;
+        transition: background 0.15s ease;
+
+        &:hover,
+        &:focus-visible {
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        &[hidden] {
+            display: none;
+        }
+
+        &--dong {
+            top: 18px;
+            right: 18px;
+            font-size: 26px;
+        }
+
+        &--truoc { left: 18px; }
+        &--sau { right: 18px; }
+
+        &--truoc,
+        &--sau {
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 34px;
+
+            // Man hinh hep: hai nut chuyen xuong day, khong de tren canh anh
+            // nua - ngon tay bam se che mat anh.
+            @media (max-width: $bp-sm) {
+                top: auto;
+                bottom: 18px;
+                transform: none;
+            }
         }
     }
 }

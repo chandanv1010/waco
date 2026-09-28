@@ -44,10 +44,24 @@ class WacoComposer
                     ->pluck('content', 'keyword')
                     ->all(),
 
-                'features' => DB::table('home_features')
-                    ->where('publish', 2)
-                    ->orderBy('group')
-                    ->orderBy('order')
+                // Keo san duong dan bai viet duoc gan (neu co) bang left join:
+                // tranh moi huy hieu lai mot truy van rieng khi dung. Bai viet
+                // da an hoac da xoa thi post_canonical ve null - view kiem tra
+                // truoc khi in the <a>.
+                'features' => DB::table('home_features as hf')
+                    ->leftJoin('posts as p', function ($join) {
+                        $join->on('p.id', '=', 'hf.post_id')
+                             ->where('p.publish', '=', 2)
+                             ->whereNull('p.deleted_at');
+                    })
+                    ->leftJoin('post_language as pl', function ($join) {
+                        $join->on('pl.post_id', '=', 'p.id')
+                             ->where('pl.language_id', '=', $this->language);
+                    })
+                    ->where('hf.publish', 2)
+                    ->orderBy('hf.group')
+                    ->orderBy('hf.order')
+                    ->select('hf.*', 'pl.canonical as post_canonical')
                     ->get()
                     ->groupBy('group'),
             ];
