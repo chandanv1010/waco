@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 /**
+ * Menu chinh: thu tu hien thi va so cap hien ra ngoai website.
+ *
  * Keo tha doi vi tri menu trong quan tri thi menu ngoai website phai doi theo.
  *
  * Truoc day khong doi: man hinh keo tha ghi `order` GIAM dan (muc dau tien
@@ -18,6 +20,7 @@ class WacoMenuOrderTest extends TestCase
 {
     private int $maDanhMuc;
     private array $thuTuGoc = [];
+    private array $macTao = [];
 
     protected function setUp(): void
     {
@@ -55,6 +58,11 @@ class WacoMenuOrderTest extends TestCase
         // lieu dung mot lan.
         foreach ($this->thuTuGoc as $id => $thuTu) {
             DB::table('menus')->where('id', $id)->update(['order' => $thuTu]);
+        }
+
+        if ($this->macTao) {
+            DB::table('menu_language')->whereIn('menu_id', $this->macTao)->delete();
+            DB::table('menus')->whereIn('id', $this->macTao)->delete();
         }
 
         parent::tearDown();
@@ -126,6 +134,63 @@ class WacoMenuOrderTest extends TestCase
         sort($daSap);
 
         $this->assertSame($daSap, $mongDoi, 'Menu ngoài trang chủ không theo đúng thứ tự vừa kéo');
+    }
+
+    /** Tao mot muc menu con cua $maCha, tra ve id. */
+    private function taoMuc(int $maCha, string $ten, int $capDo): int
+    {
+        $id = DB::table('menus')->insertGetId([
+            'parent_id' => $maCha,
+            'menu_catalogue_id' => $this->maDanhMuc,
+            'lft' => 0,
+            'rgt' => 0,
+            'level' => $capDo - 1,
+            'publish' => 2,
+            'order' => 0,
+            'user_id' => DB::table('users')->min('id'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('menu_language')->insert([
+            'menu_id' => $id,
+            'language_id' => config('app.language_id') ?: 1,
+            'name' => $ten,
+            'canonical' => 'lien-he',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $this->macTao[] = $id;
+
+        return $id;
+    }
+
+    public function test_menu_cap_3_hien_ra_ngoai_website(): void
+    {
+        // Quan tri tao duoc cap 3 tu lau, nhung dau trang chi viet tay hai cap
+        // long nhau nen cap 3 khong hien ra o dau ca.
+        $maCha = (int) DB::table('menus')
+            ->where('menu_catalogue_id', $this->maDanhMuc)
+            ->where('parent_id', 0)
+            ->orderBy('order')
+            ->value('id');
+
+        $capHai = $this->taoMuc($maCha, 'Muc cap hai tu dong', 2);
+        $this->taoMuc($capHai, 'Muc cap ba tu dong', 3);
+
+        $this->xoaBoNhoTamMenu();
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('Muc cap hai tu dong', $html, 'Menu cấp 2 không hiện');
+        $this->assertStringContainsString('Muc cap ba tu dong', $html, 'Menu cấp 3 không hiện');
+
+        // Ban may tinh: cap 3 phai tha sang ben canh chu khong xuong duoi.
+        $this->assertStringContainsString('waco-menu__sub--canh', $html, 'Cấp 3 không có khung thả sang bên');
+
+        // Ban dien thoai: do phang va thut sau hon cap 2.
+        $this->assertStringContainsString('waco-mobile-menu__muc--cap3', $html, 'Menu điện thoại chưa có cấp 3');
     }
 
     public function test_danh_sach_trong_quan_tri_xep_cung_chieu_voi_website(): void

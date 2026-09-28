@@ -258,15 +258,37 @@ $bp-sm: 480px;
         transition: opacity 0.18s ease, transform 0.18s ease;
     }
 
-    &__item:hover &__sub,
-    &__item:focus-within &__sub {
+    // Cap 3 tro di tha sang BEN CANH chu khong xuong duoi: tha xuong thi no
+    // de len chinh menu cha, ro chuot sang muc khac la mat.
+    //
+    // left: 100% dat sat canh phai cua khung cha. Tru 4px cho hai khung hoi
+    // chong nhau - khong thi chuot di qua khe ho la menu con dong ngay.
+    &__sub--canh {
+        top: -9px;
+        left: calc(100% - 4px);
+        transform: translateX(6px);
+    }
+
+    // Khung cha phai la moc dinh vi cho khung con, khong thi cap 3 bam theo
+    // muc cap 1 o ngoai cung.
+    &__sub-item {
+        position: relative;
+    }
+
+    &__item:hover > &__sub,
+    &__item:focus-within > &__sub,
+    &__sub-item:hover > &__sub,
+    &__sub-item:focus-within > &__sub {
         opacity: 1;
         visibility: visible;
-        transform: translateY(0);
+        transform: translate(0, 0);
     }
 
     &__sub-link {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
         padding: 9px 18px;
         color: $waco-text;
         font-size: 12px;
@@ -278,6 +300,19 @@ $bp-sm: 480px;
             background: $waco-bg;
             color: $waco-blue;
         }
+
+        svg {
+            flex-shrink: 0;
+            opacity: 0.55;
+        }
+    }
+
+    // Muc cuoi thanh menu: menu con tha sang trai de khong tran ra ngoai man
+    // hinh. Dung :nth-last-child(-n+2) - hai muc cuoi deu co nguy co tran.
+    &__item:nth-last-child(-n+2) &__sub--canh {
+        left: auto;
+        right: calc(100% - 4px);
+        transform: translateX(-6px);
     }
 }
 
@@ -317,10 +352,28 @@ $bp-sm: 480px;
         border-bottom: 0;
     }
 
-    .is-child a {
+    // Cap cang sau thut cang sau. Chi co bon muc: sau cap 4 thi giu nguyen,
+    // thut them nua la chu bi don vao mot dai hep ben phai.
+    &__muc--cap2 a {
         padding-left: 16px;
         color: $waco-text;
         font-weight: 500;
+        text-transform: none;
+    }
+
+    &__muc--cap3 a {
+        padding-left: 32px;
+        color: $waco-text;
+        font-weight: 500;
+        font-size: 12.5px;
+        text-transform: none;
+    }
+
+    &__muc--cap4 a {
+        padding-left: 48px;
+        color: $waco-muted;
+        font-weight: 500;
+        font-size: 12.5px;
         text-transform: none;
     }
 }

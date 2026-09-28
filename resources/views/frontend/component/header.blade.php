@@ -37,28 +37,11 @@
         <nav class="waco-header__nav" aria-label="Menu chính">
             <ul class="waco-menu">
                 @foreach($mainMenu as $node)
-                    @php $m = $menuLabel($node); @endphp
-                    @continue(is_null($m))
-                    <li class="waco-menu__item">
-                        <a href="{{ $m['url'] }}" class="waco-menu__link" title="{{ $m['name'] }}">
-                            {{ $m['name'] }}
-                            @if(count($node['children']))
-                                @include('frontend.component.waco-icon', ['name' => 'chevron-down'])
-                            @endif
-                        </a>
-
-                        @if(count($node['children']))
-                            <ul class="waco-menu__sub">
-                                @foreach($node['children'] as $child)
-                                    @php $c = $menuLabel($child); @endphp
-                                    @continue(is_null($c))
-                                    <li>
-                                        <a href="{{ $c['url'] }}" class="waco-menu__sub-link" title="{{ $c['name'] }}">{{ $c['name'] }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </li>
+                    @include('frontend.component.waco-menu-node', [
+                        'node' => $node,
+                        'cap' => 1,
+                        'menuLabel' => $menuLabel,
+                    ])
                 @endforeach
             </ul>
         </nav>
@@ -74,19 +57,16 @@
         </button>
     </div>
 
-    {{-- Menu cho man hinh hep: do phang ca hai cap ra mot danh sach, vi o be
-         ngang nay khong co cho cho menu tha xuong. --}}
+    {{-- Menu cho man hinh hep: do phang MOI cap ra mot danh sach, cap sau thut
+         vao sau hon. O be ngang nay khong co cho cho menu tha xuong. --}}
     <div class="waco-mobile-menu" id="waco-mobile-menu">
         <ul>
             @foreach($mainMenu as $node)
-                @php $m = $menuLabel($node); @endphp
-                @continue(is_null($m))
-                <li><a href="{{ $m['url'] }}">{{ $m['name'] }}</a></li>
-                @foreach($node['children'] as $child)
-                    @php $c = $menuLabel($child); @endphp
-                    @continue(is_null($c))
-                    <li class="is-child"><a href="{{ $c['url'] }}">{{ $c['name'] }}</a></li>
-                @endforeach
+                @include('frontend.component.waco-mobile-menu-node', [
+                    'node' => $node,
+                    'cap' => 1,
+                    'menuLabel' => $menuLabel,
+                ])
             @endforeach
             <li><a href="{{ url('/#dang-ky-dai-ly') }}">{{ $intro['header_cta_label'] ?? 'Trở thành đại lý' }}</a></li>
         </ul>
